@@ -1,0 +1,55 @@
+# things starting with a # are comment lines
+
+#####################	Definitions ##########################################
+C++		= g++
+CFLAGS		= -g	     # extra compiler flags
+INCLUDE		=            # list directories other than current
+                             # that hold files you include
+SRCS		= randgen.C item.C backpack.C creature.C event.C party.C map.C dice.C table.C game.C
+OBJECTS		= randgen.o item.o backpack.o creature.o event.o party.o map.o dice.o table.o game.o
+                                       # objects are pre-compiled, just need
+                                       # to link
+
+
+####################   Rules  *********************************************
+
+### Rules are of the form 
+#      name: dependencies (what files this rule needs to work)
+#            actions to take when the dependencies are completed
+#   This second line is indented with a tab!
+
+# this rule builds an executable game.exe from the object files
+
+game.exe: $(OBJECTS)
+	$(C++)  $(CFLAGS) $(OBJECTS) -o game.exe
+
+
+# this rule builds object files from .C files
+.C.o:   
+	$(C++) $(INCLUDE) $(CFLAGS) -c $< -o $@
+
+# this rule removes the object files
+clean:
+	rm -f *.o *~ $(EXEC)
+
+##############################################################
+# Which libraries should be linked
+#
+LINK_LIBRARIES = -ltapestry
+LDLIBS = $(LINK_LIBRARIES)
+
+
+
+randgen.o: randgen.h randgen.C
+item.o: item.h item.C
+backpack.o: backpack.h backpack.C
+creature.o: creature.h creature.C
+event.o: event.h event.C
+party.o: party.h party.C
+map.o: map.h map.C
+dice.o: dice.h dice.C
+table.o: table.h table.C
+game.o: game.C item.h backpack.h creature.h event.h party.h map.h
+
+
+
